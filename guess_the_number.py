@@ -1,9 +1,11 @@
-num = int(122244)
+import random
+#num = int(122244)
+num = random.randint(0, 100)
 counter = 0
 
 while True:
     counter += 1
-    inputNum = int(input('Guess the number between 0 and 1 000 000 000: '))
+    inputNum = int(input('Guess the number between 0 and 100: '))
     if inputNum == num:
         print()
         print('You guessed correctly! The magic number is indeed', num)
