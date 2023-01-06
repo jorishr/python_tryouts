@@ -120,12 +120,17 @@ def calcHealth(player1,player2,result,punishment,scoreP1,scoreP2,ties):
     if newHealth <= 0:
       printGameOverMessage(player1,player2,result,scoreP1,scoreP2,ties)
       return 'gameover'
-  else:
+    return ''
+  elif result == 2:
     newHealth = player1[1] - punishment
     player1[1] = newHealth
     if newHealth <= 0:
       printGameOverMessage(player1,player2,result,scoreP1,scoreP2,ties)
       return 'gameover'
+    return ''
+  else:
+    return ''
+
 
 def printGameOverMessage(player1,player2,result,scoreP1,scoreP2,ties):
     time.sleep(1)
@@ -218,7 +223,7 @@ def startBattle(player1,player2,punishment):
             result = 3
             ties += 1
             time.sleep(1)
-            calcHealth(player1,player2,result,punishment,scoreP1,scoreP2,ties)
+            printBattleResult(player1,player2,result,attemptP1,attemptP2)
             check = ''
 
         if check == 'gameover':
