@@ -1,129 +1,150 @@
 import os, time
 
-myTodoList = []
-
-def printHeader():
-  title = 'My Todo List'
-  print(f'{title: ^35}', end='\n\n')
-  time.sleep(1)
-
-
-def printList(list):
-  print('\nList of tasks:\n')
-  for i in range(len(list)):
-    num = i + 1
-    print(f'{num}. {list[i]}')
-  print('---------------\n')
-
-
-def printMenu():
-  menuOptions = [
-    'View list', 'Add item', 'Remove item', 'Edit item', 'Erase list'
-  ]
-  print('What do you want to do?', end='\n\n')
-  for i in range(len(menuOptions)):
-    num = i + 1
-    print(f'{num}. {menuOptions[i]}', end='\n')
-
-
-def getUserInput():
-  time.sleep(1)
-  userInput = input(
-    '\nChoose a number from the menu or type \'exit\' to leave the app.\n\n')
-  return userInput
-
-
-def restart():
-  time.sleep(1.5)
+def clear():
   os.system('clear')
-  printHeader()
-  printMenu()
+  showTitle()
+
+def pause():
+  time.sleep(1)
+
+def showTitle():
+  titleTxt = '\033[0;34m=== \033[0;36mTask Manager \033[0;34m===\033[0;0m'
+  print(f'{titleTxt:^35}', end='\n\n')
+
+def showMenu(menuOptions):
+  print('Menu')
+  for i, item in enumerate(menuOptions):
+    num = i + 1
+    print(f'{num}. {item.capitalize()}')
+
+def addTask(tasks):
+  clear()
+  desc = input('\nEnter a task description.\n').lower().strip()
+  deadline = input('\nEnter a deadline.\n').lower().strip()
+  priority = input(
+    '\nEnter a priority level. (high, medium, low).\n').lower().strip()
+  newTask = [desc, deadline, priority]
+  tasks.append(newTask)
 
 
-def appendItem():
-  item = input('\nPlease enter a new task...\n\n')
-  isDuplicate = isItemInList(item)
-  if isDuplicate == True:
-    print('\nSorry, that task already exists. No duplicates allowed.')
-    restart()
+def showView(tasks,inputErrorMessage):
+  clear()
+  userInput = input('\nWhat view do you want?\n\n * View all tasks(type \'all\')\n * View task by priority (type \'high/medium/low\')\n\n').lower().strip()
+  if userInput[0:1] == 'a':
+    for task in tasks:
+      clear()
+      print(task)
+  elif userInput[0:1] == 'h':
+    for task in tasks:
+      if task[2] == 'high':
+        clear()
+        print(task)
+  elif userInput[0:1] == 'm':
+    for task in tasks:
+      if task[2] == 'medium':
+        clear()
+        print(task)
+  elif userInput[0:1] == 'l':
+    for task in tasks:
+      if task[2] == 'low':
+        clear()
+        print(task)
   else:
-    myTodoList.append(item)
-    print('\nItem added to the list')
-    restart()
+    clear()
+    print(inputErrorMessage)
+
+  userInput = input('\nDo you want to view something else? (y/n)\n\n')
+  if userInput == 'y':
+    clear()
+    showView(tasks,inputErrorMessage)
 
 
-def editItem():
-  item = input('\nEnter the task to edit...\n\n')
-  checkItem = isItemInList(item)
-  if checkItem == True:
-    newInput = input(
-      f'\nFound the task: {item}. Now write the new text for this task:\n')
-    for i in range(len(myTodoList)):
-      if myTodoList[i] == item:
-        myTodoList[i] = newInput
-        print('\nTask update completed.')
-        restart()
-  else:
-    print('Sorry, item not found in the list.')
-    restart()
+def removeTask(taskName,tasks):
+  clear()
+  if taskName == '':
+    taskName = input('\nWhat task do you want to remove?\n').lower().strip()
 
-def removeItem():
-  item = input('\nEnter the task to remove...\n\n')
-  checkItem = isItemInList(item)
-  if checkItem == True:
-    askConfirm = input(f'\nAre you sure you want to delete {item}? (y/n)\n')
-    if askConfirm == 'y':
-      myTodoList.remove(item)
-      print(f'{item} removed from list.\n')
-      restart()
-    else:
-      restart()
-  else:
-    print('\nSorry, that task doesn\'t exist')
-    removeItem()
+  for task in tasks:
+    if task[0] == taskName:
+      tasks.remove(task)
+      return True
 
+  taskName = input('\n\033[1;33mThat tasks does not exist. Try again or type \'cancel\' to go back to the menu\n\033[0;0m') 
+  if taskName.lower().strip()[0:1] != 'c':
+    result = removeTask(taskName,tasks)
+    return result
 
-def clearList():
-  askConf = askConfirm()
-  if askConf == True:
-    globals()['myTodoList'] = []
-  restart()
-
-
-def isItemInList(item):
-  if item in myTodoList:
-    return True
   return False
 
 
-def askConfirm():
-  answer = input('\nAre you sure? This action cannot be undone! (y/n)\n')
-  if answer == 'y':
-    return True
+def editTask(taskName,tasks,inputErrorMessage):
+  clear()
+  if taskName == '':
+    taskName = input('\nWhat task do you want to edit?\n').lower().strip()
+  
+  for task in tasks:
+    if task[0] == taskName:
+      changeType = input(f'\nWhat do you want to change about this task? ({len(task)})\n\n1. Description: {task[0]}\n2. Deadline: {task[1]}\n3. Priority: {task[2]}\n')
+      if changeType == '1':
+        newName = input('\nEnter the new task description.\n').lower().strip()
+        task[0] = newName
+      elif changeType == '2':
+        newDeadline = input('\nEnter the new deadline for the task.\n').lower().strip()
+        task[1] = newDeadline
+      elif changeType == '3':
+        newPriority = input('\nEnter the new priority (high/medium/low)).\n').lower().strip()
+        task[2] = newPriority
+      else:
+        print(inputErrorMessage)
+        time.sleep(2)
+        result = editTask(taskName,tasks,inputErrorMessage)
+        return result
+      return True
+
+  taskName = input('\n\033[1;33mThat tasks does not exist. Try again or type \'cancel\' to go back to the menu\n\033[0;0m')
+  if taskName.lower().strip()[0:1] != 'c':
+    result = editTask(taskName,tasks,inputErrorMessage)
+    return result
+  
   return False
 
-def startApp():
-  printHeader()
-  printMenu()
+
+def runTaskManager():
+  menuOptions = ['add', 'view', 'edit', 'remove']
+  tasks = [['work', 'tomorrow', 'high'], ['play', 'in two days', 'low']]
+  inputErrorMessage = '\n\033[0;31mOops, I did not recognize that command. Try again.\n\033[0;0m'
 
   while True:
-    action = getUserInput()
-    if action == '1':
-      printList(myTodoList)
-    elif action == '2':
-      appendItem()
-    elif action == '3':
-      removeItem()
-    elif action == '4':
-      editItem()
-    elif action == '5':
-      clearList()
-    elif action == 'exit':
-      print('\nGoodbye!')
-      time.sleep(1)
-      os.system('clear')
-      break
+    os.system('clear')
+    showTitle()
+    showMenu(menuOptions)
+
+    userAction = input(f'\nChoose an option from the menu (1-{len(menuOptions)})\n')
+    
+    if userAction == '1':
+      addTask(tasks)
+      print('\n\033[0;32mTask added to the list. Back to the menu now...\033[0;0m\n')
+      time.sleep(2)
+    elif userAction == '2':
+      showView(tasks,inputErrorMessage)   
+    elif userAction == '3':
+      taskName = ''
+      result = editTask(taskName,tasks,inputErrorMessage)
+      if result == True:
+        print('\n\033[0;32mTask update completed. Back to the menu now...\033[0;0m\n')
+        time.sleep(2)
+      else:
+        continue
+    elif userAction == '4':
+      taskName = ''
+      result = removeTask(taskName,tasks)
+      if result == True:
+        print('\n\033[0;32mTask removed from the list. Back to the menu now...\033[0;0m\n')
+        time.sleep(2)
+      else:
+        continue
     else:
-      print('\nI did not recognize that command. Try again.\n')
-      restart()
-startApp()
+      print(inputErrorMessage)
+      time.sleep(2)
+      continue
+runTaskManager()
