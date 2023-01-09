@@ -31,29 +31,37 @@ def showView(tasks,inputErrorMessage):
   clear()
   userInput = input('\nWhat view do you want?\n\n * View all tasks(type \'all\')\n * View task by priority (type \'high/medium/low\')\n\n').lower().strip()
   if userInput[0:1] == 'a':
+    clear()
     for task in tasks:
-      clear()
-      print(task)
+      print()
+      for item in task:
+        print(item, end=' | ')
   elif userInput[0:1] == 'h':
+    clear()
     for task in tasks:
+      print()
       if task[2] == 'high':
-        clear()
-        print(task)
+        for item in task:
+          print(item, end=' | ')
   elif userInput[0:1] == 'm':
+    clear()
     for task in tasks:
+      print()
       if task[2] == 'medium':
-        clear()
-        print(task)
+        for item in task:
+          print(item, end=' | ')
   elif userInput[0:1] == 'l':
+    clear()
     for task in tasks:
+      print()
       if task[2] == 'low':
-        clear()
-        print(task)
+        for item in task:
+          print(item, end=' | ')
   else:
     clear()
     print(inputErrorMessage)
 
-  userInput = input('\nDo you want to view something else? (y/n)\n\n')
+  userInput = input('\n\nDo you want to view something else? (y/n)\n\n')
   if userInput == 'y':
     clear()
     showView(tasks,inputErrorMessage)
@@ -84,7 +92,7 @@ def editTask(taskName,tasks,inputErrorMessage):
   
   for task in tasks:
     if task[0] == taskName:
-      changeType = input(f'\nWhat do you want to change about this task? ({len(task)})\n\n1. Description: {task[0]}\n2. Deadline: {task[1]}\n3. Priority: {task[2]}\n')
+      changeType = input(f'\nWhat do you want to change about this task? (1-{len(task)})\n\n1. Description: {task[0]}\n2. Deadline: {task[1]}\n3. Priority: {task[2]}\n')
       if changeType == '1':
         newName = input('\nEnter the new task description.\n').lower().strip()
         task[0] = newName
