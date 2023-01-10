@@ -134,6 +134,7 @@ Interact with the Operating System (terminal)
 import os
 #clear terminal
 os.system('clear')
+os.popen('your terminal command')
 ```
 ### time 
 Control timing
