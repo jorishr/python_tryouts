@@ -116,10 +116,22 @@ def editTask(taskName,tasks,inputErrorMessage):
   
   return False
 
+def storeInFile(data):
+  f = open('tasks.txt', 'w')
+  f.write(f'{data}\n')
+  f.close()
+
+def loadDataFromFile():
+  f = open('tasks.txt', 'r')
+  data = eval(f.read())
+  f.close()
+  return data
 
 def runTaskManager():
-  menuOptions = ['add', 'view', 'edit', 'remove']
-  tasks = [['work', 'tomorrow', 'high'], ['play', 'in two days', 'low']]
+  #load data from file or use dummy data below
+  #tasks = [['work', 'tomorrow', 'high'], ['play', 'in two days', 'low']]
+  tasks = loadDataFromFile()
+  menuOptions = ['add', 'view', 'edit', 'remove', 'quit']
   inputErrorMessage = '\n\033[0;31mOops, I did not recognize that command. Try again.\n\033[0;0m'
 
   while True:
@@ -151,8 +163,12 @@ def runTaskManager():
         time.sleep(2)
       else:
         continue
+    elif userAction == '5':
+      clear()
+      exit()
     else:
       print(inputErrorMessage)
       time.sleep(2)
-      continue
+      continue  
+    storeInFile(tasks)
 runTaskManager()
