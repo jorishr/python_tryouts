@@ -3,12 +3,16 @@
   - [Overview commonly used subroutines](#overview-commonly-used-subroutines)
     - [print](#print)
     - [string manipulation](#string-manipulation)
-  - [dictionary methods](#dictionary-methods)
+    - [list methods](#list-methods)
+    - [dictionary methods](#dictionary-methods)
+    - [read and write to files](#read-and-write-to-files)
+    - [error handling](#error-handling)
   - [Overview of commonly used Python Libraries](#overview-of-commonly-used-python-libraries)
     - [getpass](#getpass)
     - [os](#os)
     - [time](#time)
     - [random](#random)
+    - [csv](#csv)
 ## Overview commonly used subroutines
 ### print
 ```python
@@ -32,7 +36,7 @@ print('\033[0;0m')
 ```python
 ## formatted strings
 var1='Good day'
-varé='Goodbye'
+var2='Goodbye'
 str = f'{var1} Hello World {var2}'
 #old format 
 str = "{var1} Hello World {var2}".format(var1=var1,var2=var2)
@@ -61,18 +65,62 @@ slicedStr = str[:]   #return every character from 0 to the end
 
 slicedStr = str[0:5:2] #cuts out every second character between position 0 and 4
 print(str[::3])        #print every third character in a string
-print(str[:])          #print every third character in a string
-print(str[::-1])       #print every third character in a string, starting from the end
+print(str[::-1])       #print every character in a string, starting from the end
 ```
-## dictionary methods
+### list methods
+```python
+# get access to index in for loop
+dataList = ['first', 'second']
+for i,val in enumerate(dataList):
+  num = i + 1
+  print(f'{num}. val')
+# prints: 
+# 1. first 
+# 2. second 
+```
+### dictionary methods
 ```Python
 # A standard for loop will only return the dictionary values. Use the items() method to access both name and value.
 for val in myDictionary
   print(val)
 
-for name,value in myDictionary.items():
-  print(f"{name}:{value}")
+for key,value in myDictionary.items():
+  print(f"{key}:{value}")
 
+```
+### read and write to files
+```python
+# This is a three step process: open a file, read or write to it, and store/close the file.
+f = open('filename.extension', 'r/w/a/a+')
+content = 'string'
+f.write(f'{content}\n')
+
+content = [] #cast lists or dictionaries into a string format
+f.write(str(content))
+
+content = f.read() #reads entire file
+content = f.readline() #reads one line, use while loop to get to the end
+
+while True:
+  contents = f.readline().strip()
+  if contents == '':
+    break
+  print(contents)
+f.close()
+
+# evaluate a string that contains valid code: example, a list or dictionary.
+data = eval(f.read())
+```
+### error handling
+```python
+try:
+  #code
+except Exception as e:
+  print('User friendly error message')
+  if debugMode:
+    #add a debug variable at the start of the program
+    print(e)
+  # do something useful to the user
 ```
 ## Overview of commonly used Python Libraries
 ### getpass 
@@ -101,4 +149,19 @@ Generate random numbers
 ```python
 import random
 num = random.randint(0,100)
+```
+### csv
+```python
+# working with Comma Separated Value files
+import csv
+# open a file and use the reader or DictReader methods
+with open('filename.extension') as file
+  #reader = csv.reader(file)
+  reader = csv.DictReader(file)
+
+  total = 0
+  for row in reader:
+    #print('\t '.join(row))
+    total += float(row['Cost']) * int(row['Amount'])
+  return total
 ```

@@ -1,4 +1,4 @@
-import os, time
+import os,time,random
 
 debugMode = True
 
@@ -27,7 +27,6 @@ def addTask(tasks):
     '\nEnter a priority level. (high, medium, low).\n').lower().strip()
   newTask = [desc, deadline, priority]
   tasks.append(newTask)
-
 
 def showView(tasks,inputErrorMessage):
   clear()
@@ -68,7 +67,6 @@ def showView(tasks,inputErrorMessage):
     clear()
     showView(tasks,inputErrorMessage)
 
-
 def removeTask(taskName,tasks):
   clear()
   if taskName == '':
@@ -85,7 +83,6 @@ def removeTask(taskName,tasks):
     return result
 
   return False
-
 
 def editTask(taskName,tasks,inputErrorMessage):
   clear()
@@ -118,26 +115,20 @@ def editTask(taskName,tasks,inputErrorMessage):
   
   return False
 
-def storeInFile(data):
-  f = open('tasks.txt', 'w')
+def storeDataInFile(data,name):
+  f = open(name, 'w')
   f.write(f'{data}\n')
   f.close()
 
 def loadDataFromFile():
-  f = open('tasks.txt', 'r')
-  data = eval(f.read())
-  f.close()
-  return data
-
-def runTaskManager():
-  #load data from file or use dummy data below
-  #tasks = [['work', 'tomorrow', 'high'], ['play', 'in two days', 'low']]
   try:
-    tasks = loadDataFromFile()
+    f = open('taskmanager/tasks.txt', 'r')
+    data = eval(f.read())
+    f.close()
+    return data    
   except Exception as e:
     showTitle()
     print('\033[0;31mOops! Failed to load the existing task list.\n')
-    time.sleep(2)
     time.sleep(2)
     if debugMode:
       print('\033[0;33mDEBUG MODE = ON\033[0;31m')
@@ -145,11 +136,25 @@ def runTaskManager():
       print(e)
       print('\n\033[0;33mThe app will now run the program with some arbitrary data that was given to it by a clever developer...')
       time.sleep(10)
+    data = [['work', 'tomorrow', 'high'], ['play', 'in two days', 'low']]
+    return data
+
+def createDataBackup(data):
+  files = os.listdir('taskmanager')
+  if 'backup' in files:
+    name = f'taskmanager/backup/backup{random.randint(10000,99000)}.txt'
+    storeDataInFile(data,name)
+  else:
+    os.mkdir('taskmanager/backup')
+    createDataBackup(data)
+
+def runTaskManager():
+  tasks = loadDataFromFile()
   menuOptions = ['add', 'view', 'edit', 'remove', 'quit']
   inputErrorMessage = '\n\033[0;31mOops, I did not recognize that command. Try again.\n\033[0;0m'
 
   while True:
-    os.system('clear')
+    clear()
     showTitle()
     showMenu(menuOptions)
 
@@ -179,10 +184,13 @@ def runTaskManager():
         continue
     elif userAction == '5':
       clear()
+      print('Backing up your data...')
+      createDataBackup(tasks)
+      clear()
       exit()
     else:
       print(inputErrorMessage)
       time.sleep(2)
       continue  
-    storeInFile(tasks)
+    storeDataInFile(tasks,'taskmanager/tasks.txt')
 runTaskManager()
