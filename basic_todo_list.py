@@ -1,5 +1,7 @@
 import os, time
 
+debugMode = True
+
 def clear():
   os.system('clear')
   showTitle()
@@ -130,7 +132,19 @@ def loadDataFromFile():
 def runTaskManager():
   #load data from file or use dummy data below
   #tasks = [['work', 'tomorrow', 'high'], ['play', 'in two days', 'low']]
-  tasks = loadDataFromFile()
+  try:
+    tasks = loadDataFromFile()
+  except Exception as e:
+    showTitle()
+    print('\033[0;31mOops! Failed to load the existing task list.\n')
+    time.sleep(2)
+    time.sleep(2)
+    if debugMode:
+      print('\033[0;33mDEBUG MODE = ON\033[0;31m')
+      time.sleep(1)
+      print(e)
+      print('\n\033[0;33mThe app will now run the program with some arbitrary data that was given to it by a clever developer...')
+      time.sleep(10)
   menuOptions = ['add', 'view', 'edit', 'remove', 'quit']
   inputErrorMessage = '\n\033[0;31mOops, I did not recognize that command. Try again.\n\033[0;0m'
 
