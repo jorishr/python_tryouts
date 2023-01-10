@@ -155,7 +155,6 @@ def runTaskManager():
 
   while True:
     clear()
-    showTitle()
     showMenu(menuOptions)
 
     userAction = input(f'\nChoose an option from the menu (1-{len(menuOptions)})\n')
@@ -186,7 +185,7 @@ def runTaskManager():
       clear()
       print('Backing up your data...')
       createDataBackup(tasks)
-      clear()
+      os.system('clear')
       exit()
     else:
       print(inputErrorMessage)

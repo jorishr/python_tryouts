@@ -1,1 +1,1 @@
-[['work', 'tomorrow', 'high'], ['workout', 'two days', 'medium'], ['shop', 'three days', 'low'], ['book holiday', 'tomorrow', 'medium']]
+[['work', 'tomorrow', 'high'], ['workout', 'two days', 'medium'], ['shop', 'three days', 'low'], ['book holiday', 'tomorrow', 'medium'], ['play', 'four days', 'low'], ['dig', 'tomorrow', 'high']]
