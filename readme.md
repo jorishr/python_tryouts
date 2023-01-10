@@ -10,7 +10,7 @@
   - [Overview of commonly used Python Libraries](#overview-of-commonly-used-python-libraries)
     - [getpass](#getpass)
     - [os](#os)
-    - [time](#time)
+    - [time and date](#time-and-date)
     - [random](#random)
     - [csv](#csv)
 ## Overview commonly used subroutines
@@ -98,6 +98,10 @@ f.write(f'{content}\n')
 content = [] #cast lists or dictionaries into a string format
 f.write(str(content))
 
+#write an empty file
+f.open('path-filename', 'w')
+f.close()
+
 content = f.read() #reads entire file
 content = f.readline() #reads one line, use while loop to get to the end
 
@@ -135,8 +139,10 @@ import os
 #clear terminal
 os.system('clear')
 os.popen('your terminal command')
+
+path = os.path.join(f'{dirName}/', fileName) #join strings to create relative path
 ```
-### time 
+### time and date
 Control timing
 ```python
 import time
@@ -144,6 +150,17 @@ import time
 print('Hello')
 time.sleep(1)
 print('World')
+
+import datetime
+today = datetime.date.today()
+event = datetime.date(year=2023, month=1, day=10) # or ask for user input
+print(event) #prints 2023-01-10
+# once a date is properly formatted, you can use math functions
+if today > event:
+  print ('You missed that event')
+#calculate the date in 30 days after today
+difference = datetime.timedelta(days=30)
+newDate = today + difference
 ```
 ### random 
 Generate random numbers
