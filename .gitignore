@@ -1,2 +1,3 @@
 taskmanager/backup/
 taskmanager/tasks.txt
+__pycache__/
