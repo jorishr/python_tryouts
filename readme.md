@@ -66,6 +66,20 @@ slicedStr = str[:]   #return every character from 0 to the end
 slicedStr = str[0:5:2] #cuts out every second character between position 0 and 4
 print(str[::3])        #print every third character in a string
 print(str[::-1])       #print every character in a string, starting from the end
+
+# hash a string with built-in method
+password = '123456'
+salt = random.randomint(10000,99999999)
+newPassword = f'{password}{salt}'
+storedPwInDB = hash(newPassword)
+
+# replace a text string within a string
+str = 'Hello world'
+print(str.replace('world','you'))
+name = 'jr'
+str = f'Hello, {name}'
+str.replace(f'{name}','sps')
+print(str)
 ```
 ### list methods
 ```python
