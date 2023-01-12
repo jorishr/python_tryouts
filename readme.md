@@ -1,5 +1,6 @@
 # Python references
 - [Python references](#python-references)
+  - [Virtual Environment](#virtual-environment)
   - [Overview commonly used subroutines](#overview-commonly-used-subroutines)
     - [print](#print)
     - [string manipulation](#string-manipulation)
@@ -10,9 +11,38 @@
   - [Overview of commonly used Python Libraries](#overview-of-commonly-used-python-libraries)
     - [getpass](#getpass)
     - [os](#os)
-    - [time and date](#time-and-date)
+    - [time, date and schedule](#time-date-and-schedule)
     - [random](#random)
     - [csv](#csv)
+    - [json](#json)
+    - [requests](#requests)
+    - [bs4 web scraping](#bs4-web-scraping)
+
+## Virtual Environment
+Virtualenv is a tool to create isolated Python environments.
+```bash
+sudo apt-get install python3-pip
+sudo pip install virtualenv
+
+# create as folder to store the environments for each app
+mkdir ~/.virtualenvs
+
+# that folder create the new env; activate
+virtualenv myNewEnvironment
+
+virtualenv -p usr/bin/python2.8 myNewEnvironment # specify a python version
+source ~/.virtualenvs/myNewEnvironment/bin/activate
+
+# go back to global environment
+deactivate
+
+which python # shows the path to the virtual environment
+pip list # see the packages
+
+# output required packages for your project into txt file 
+pip freeze --local > requirements.txt
+pip install -r requirements.txt
+```
 ## Overview commonly used subroutines
 ### print
 ```python
@@ -50,6 +80,8 @@ print(f"Day {i:^35} of 30") # Use 35 characters and align center
 str.lower().upper()
 str.capitalize().title()
 str.strip()
+str.find('a') #returns index position or -1 if not found
+str.find('word')
 
 # split string
 splitStr = str.split()    #default is at whitespace
@@ -126,6 +158,12 @@ while True:
   print(contents)
 f.close()
 
+# write binary data (images, for example) 
+image = requests.get('api/endpoint')
+f.open(fileName, 'wb')
+f.write(image.content)
+f.close()
+
 # evaluate a string that contains valid code: example, a list or dictionary.
 data = eval(f.read())
 ```
@@ -141,6 +179,7 @@ except Exception as e:
   # do something useful to the user
 ```
 ## Overview of commonly used Python Libraries
+See [python modules documentation for further details](https://docs.python.org/3/py-modindex.html)
 ### getpass 
 Hide terminal input from user
 ```python
@@ -156,7 +195,7 @@ os.popen('your terminal command')
 
 path = os.path.join(f'{dirName}/', fileName) #join strings to create relative path
 ```
-### time and date
+### time, date and schedule
 Control timing
 ```python
 import time
@@ -175,6 +214,16 @@ if today > event:
 #calculate the date in 30 days after today
 difference = datetime.timedelta(days=30)
 newDate = today + difference
+
+# schedule a task to do something every x seconds
+import schedule
+def printMe():
+  print("⏰")
+schedule.every(2).seconds.do(printMe)
+while True: 
+  schedule.run_pending() 
+  #runs any task in the schedule, resource intensive timeout to mitigate
+  time.sleep(1)
 ```
 ### random 
 Generate random numbers
@@ -197,3 +246,19 @@ with open('filename.extension') as file
     total += float(row['Cost']) * int(row['Amount'])
   return total
 ```
+### json
+```python
+import json, requests
+result = requests.get('api/endpoint')
+user = result.json()
+print(json.dump(user, indent=2)) # print pretty in console 
+```
+### requests
+```python
+import requests
+result = requests.get('api/endpoint', headers={'Accept': 'application/json'})
+if result.status_code == 200:
+  user = result.json()
+```
+### bs4 web scraping
+See [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
