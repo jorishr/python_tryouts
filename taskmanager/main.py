@@ -64,7 +64,7 @@ def editTask(taskName,tasks,inputErrorMessage):
 
 def runTaskManager():
   tasks = storage.loadDataFromFile()
-  menuOptions = ['add', 'view', 'edit', 'remove', 'quit']
+  menuOptions = ['add', 'view', 'edit', 'remove', 'create backup', 'restore backup', 'quit']
   inputErrorMessage = '\n\033[0;31mOops, I did not recognize that command. Try again.\n\033[0;0m'
 
   while True:
@@ -98,7 +98,16 @@ def runTaskManager():
     elif userAction == '5':
       scrn.clear()
       print('Backing up your data...')
+      time.sleep(2)
       storage.createDataBackup(tasks)
+      print('\n\033[0;32mBackup complete!\033[0;0m')
+      time.sleep(2)
+    elif userAction == '6':
+      tasks = storage.loadBackupData()
+    elif userAction == '7':
+      scrn.clear()
+      print('Goodbye...')
+      time.sleep(1)
       os.system('clear')
       exit()
     else:

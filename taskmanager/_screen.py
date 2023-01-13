@@ -16,3 +16,5 @@ def showMenu(menuOptions):
   for i, item in enumerate(menuOptions):
     num = i + 1
     print(f'{num}. {item.capitalize()}')
+    if i == 3 or i == 5:
+      print('-----------------')
