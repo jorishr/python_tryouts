@@ -7,7 +7,8 @@ def showView(tasks,inputErrorMessage):
     print('Your task list is empty.\n')
     time.sleep(3)
   else:
-    userInput = input('\nWhat view do you want?\n\n * View all tasks(type \'all\')\n * View task by priority (type \'high/medium/low\')\n\n').lower().strip()
+    message = scrn.getViewOptions()
+    userInput = input(f'\n{message}').lower().strip()
 
     if userInput[0:1] == 'a':
       scrn.clear()

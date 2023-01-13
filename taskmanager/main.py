@@ -24,21 +24,23 @@ def removeTask(taskName,tasks):
       tasks.remove(task)
       return True
 
-  taskName = input('\n\033[1;33mThat tasks does not exist. Try again or type \'cancel\' to go back to the menu\n\033[0;0m') 
+  inputMessage = scrn.makePretty('USER_WARNING','That tasks does not exist. Try again or type \'cancel\' to go back to the menu')
+  taskName = input(f'\n{inputMessage}\n') 
   if taskName.lower().strip()[0:1] != 'c':
     result = removeTask(taskName,tasks)
     return result
-
   return False
 
 def editTask(taskName,tasks,inputErrorMessage):
   scrn.clear()
   if taskName == '':
-    taskName = input('\nWhat task do you want to edit?\n').lower().strip()
+    inputMessage = scrn.makePretty('DEFAULT', 'What task do you want to edit?')
+    taskName = input(f'\n{inputMessage}\n').lower().strip()
   
   for task in tasks:
     if task[0] == taskName:
-      changeType = input(f'\nWhat do you want to change about this task? (1-{len(task)})\n\n1. Description: {task[0]}\n2. Deadline: {task[1]}\n3. Priority: {task[2]}\n')
+      inputMessage = scrn.getEditOptions(task)
+      changeType = input(inputMessage)
       if changeType == '1':
         newName = input('\nEnter the new task description.\n').lower().strip()
         task[0] = newName
@@ -54,18 +56,18 @@ def editTask(taskName,tasks,inputErrorMessage):
         result = editTask(taskName,tasks,inputErrorMessage)
         return result
       return True
-
-  taskName = input('\n\033[1;33mThat tasks does not exist. Try again or type \'cancel\' to go back to the menu\n\033[0;0m')
+  
+  inputMessage = scrn.makePretty('USER_WARNING','That tasks does not exist. Try again or type \'cancel\' to go back to the menu')
+  taskName = input(f'\n{inputMessage}\n')
   if taskName.lower().strip()[0:1] != 'c':
     result = editTask(taskName,tasks,inputErrorMessage)
     return result
-  
   return False
 
 def runTaskManager():
   tasks = storage.loadDataFromFile()
   menuOptions = ['add', 'view', 'edit', 'remove', 'create backup', 'restore backup', 'quit']
-  inputErrorMessage = '\n\033[0;31mOops, I did not recognize that command. Try again.\n\033[0;0m'
+  inputErrorMessage = scrn.makePretty('USER_WARNING','Oops, I did not recognize that command. Try again.\n')
 
   while True:
     scrn.clear()
@@ -75,7 +77,8 @@ def runTaskManager():
     
     if userAction == '1':
       addTask(tasks)
-      print('\n\033[0;32mTask added to the list. Back to the menu now...\033[0;0m\n')
+      message = scrn.makePretty('SUCCESS','Task added to the list. Back to the menu now...')
+      print(f'\n{message}\n')
       time.sleep(2)
     elif userAction == '2':
       view.showView(tasks,inputErrorMessage)   
@@ -83,7 +86,8 @@ def runTaskManager():
       taskName = ''
       result = editTask(taskName,tasks,inputErrorMessage)
       if result == True:
-        print('\n\033[0;32mTask update completed. Back to the menu now...\033[0;0m\n')
+        message = scrn.makePretty('SUCCESS','Task update completed. Back to the menu now...')
+        print(f'\n{message}\n')
         time.sleep(2)
       else:
         continue
@@ -91,7 +95,8 @@ def runTaskManager():
       taskName = ''
       result = removeTask(taskName,tasks)
       if result == True:
-        print('\n\033[0;32mTask removed from the list. Back to the menu now...\033[0;0m\n')
+        message = scrn.makePretty('SUCCESS','Task removed from the list. Back to the menu now...')
+        print(f'\n{message}\n')
         time.sleep(2)
       else:
         continue
@@ -100,7 +105,8 @@ def runTaskManager():
       print('Backing up your data...')
       time.sleep(2)
       storage.createDataBackup(tasks)
-      print('\n\033[0;32mBackup complete!\033[0;0m')
+      message = scrn.makePretty('SUCCESS','Backup complete!')
+      print(f'\n{message}\n')
       time.sleep(2)
     elif userAction == '6':
       tasks = storage.loadBackupData()

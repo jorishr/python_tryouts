@@ -18,9 +18,11 @@ def loadDataFromFile():
     if debugMode:
       scrn.showTitle()
       time.sleep(1)
-      print('\033[0;33mDEBUG MODE = ON')
+      message = scrn.makePretty('DEV_WARNING','DEBUG MODE = ON')
+      print(f'\n{message}\n')
       time.sleep(1)
-      print(f'\nFailed to load the existing task list.\n{e}\n\n\033[0;0mLoading program with empty task list...')
+      message = scrn.makePretty('DEV_WARNING',f'Failed to load the existing task list.\n{e}\n\n\033[0;0mLoading program with empty task list...')
+      print(f'\n{message}\n')
       time.sleep(10)
     data = []
     return data
@@ -69,29 +71,36 @@ def createDataBackup(data):
 
 
 def loadBackupData():
-  print('\033[0;0m\nSearching for backup data...')
+  message = scrn.makePretty('DEFAULT','Searching for backup data...')
+  print(f'\n{message}\n')
   try:
     fileList = getFileList()
     if fileList:
       mostRecent = fileList[0]
-      print(f'\n\033[0;32mBackup found.\nRestoring most recent backup: {mostRecent}')
+      message = scrn.makePretty('SUCCESS',f'Backup found.\nRestoring most recent backup: {mostRecent}')
+      print(f'\n{message}')
       time.sleep(3)
       f = open(mostRecent, 'r')
       data = eval(f.read())
       f.close()
-      print('\nBackup data restored successfully.')
+      message = scrn.makePretty('SUCCESS','Backup data restored successfully.')
+      print(f'\n{message}')
       time.sleep(3)
       return data
     else:
       time.sleep(3)
-      print('\n\033[0;33mNo backup files found.')
-      print('\n\033[0;33mBackup files should be placed in a folder named \'backup\'.\nExpected file name format: \'backup{hash of timestamp}.csv')
+      message = scrn.makePretty('USER_WARNING','No backup files found.')
+      print(message)
+      time.sleep(1)
+      message = scrn.makePretty('USER_WARNING','Backup files should be placed in a folder named \'backup\'.\nExpected file name format: \'backup{hash of timestamp}.csv')
+      print(f'\n{message}')
       time.sleep(10)
       data = []
       return data
   except Exception as e:
     if debugMode:
-      print(f'\n\033[0;31mUnable to load backup file:\n\n{e}')
+      message = scrn.makePretty('ERROR',f'Unable to load backup file:\n\n{e}')
+      print(f'\n{message}')
       time.sleep(10)
     data = []
     return data
