@@ -2,6 +2,7 @@ import os,time
 import _screen as scrn
 import _view as view
 import _storage as storage
+import _model as model
 
 debugMode = True
 
@@ -9,8 +10,7 @@ def addTask(tasks):
   scrn.clear()
   desc = input('\nEnter a task description.\n').lower().strip()
   deadline = input('\nEnter a deadline.\n').lower().strip()
-  priority = input(
-    '\nEnter a priority level. (high, medium, low).\n').lower().strip()
+  priority = input('\nEnter a priority level. (high, medium, low).\n').lower().strip()
   newTask = [desc, deadline, priority]
   tasks.append(newTask)
 
