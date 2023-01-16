@@ -8,6 +8,7 @@ def storeDataInFile(data,name):
   f.write(f'{data}\n')
   f.close()
 
+
 def loadDataFromFile():
   try:
     f = open('taskmanager/tasks.txt', 'r')
@@ -55,7 +56,6 @@ def createDataBackup(data):
   if existFolder == False:
     os.mkdir('taskmanager/backup')
     createDataBackup(data)
-
   # only store max. 10 backup files; remove oldest first
   fileList = getFileList()
   limit = False

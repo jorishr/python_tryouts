@@ -233,11 +233,12 @@ num = random.randint(0,100)
 ```
 ### csv
 ```python
+# See [documentation](https://docs.python.org/3/library/csv.html)
 # working with Comma Separated Value files
 import csv
-# open a file and use the reader or DictReader methods
+# Check the actual data in the file and documentation first
+# open a file that contains objects and use the DictReader method
 with open('filename.extension') as file
-  #reader = csv.reader(file)
   reader = csv.DictReader(file)
 
   total = 0
