@@ -18,7 +18,7 @@ Complete command line program with the following functionalities:
   - error handling if no backup is found or error encountered
 - general error handling: 
   - errors are hidden from end user 
-  - debug mode for development
+  - debug mode for development: run  `main.py --debug`
 - screen functions:
   - printing color coded message
   - menu options 

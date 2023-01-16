@@ -2,9 +2,8 @@ import os,time
 import _screen as scrn
 import _view as view
 import _storage as storage
-import _model as model
+#import _model as model
 
-debugMode = True
 
 def addTask(tasks):
   scrn.clear()

@@ -1,7 +1,8 @@
 import _screen as scrn
 import os, glob, time, datetime
+import _args as args
 
-debugMode = True
+debugMode = args.debugMode
 
 def storeDataInFile(data,name):
   f = open(name, 'w')
