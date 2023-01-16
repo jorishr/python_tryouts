@@ -11,6 +11,7 @@
   - [Overview of commonly used Python Libraries](#overview-of-commonly-used-python-libraries)
     - [getpass](#getpass)
     - [os](#os)
+    - [glob](#glob)
     - [time, date and schedule](#time-date-and-schedule)
     - [random](#random)
     - [csv](#csv)
@@ -194,6 +195,20 @@ os.system('clear')
 os.popen('your terminal command')
 
 path = os.path.join(f'{dirName}/', fileName) #join strings to create relative path
+os.path.getctime #get the creation time of path or filename
+```
+### glob
+The glob module finds all the path names matching a specified pattern.
+```python
+import glob
+def getFileList():
+  # returns list of backup files, most recently created first
+  fileList = glob.glob('taskmanager/backup/*')
+  if fileList:
+    fileList.sort(key=os.path.getctime, reverse=True)
+    return fileList
+  fileList = []
+  return fileList
 ```
 ### time, date and schedule
 Control timing
