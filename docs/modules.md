@@ -3,6 +3,7 @@
   - [getpass](#getpass)
   - [os](#os)
   - [glob](#glob)
+  - [argparse](#argparse)
   - [time, date and schedule](#time-date-and-schedule)
   - [random](#random)
   - [csv](#csv)
@@ -40,6 +41,23 @@ def getFileList():
     return fileList
   fileList = []
   return fileList
+```
+### argparse
+Argparse make processing command line arguments easier by reading the `sys.argv` and parsing those to your instructions. You also get a help menu and user friendly messages. 
+- [doc](https://docs.python.org/3/library/argparse.html)
+- [tutorial](https://docs.python.org/3/howto/argparse.html#)
+```python
+import argparse
+# define the parser and run the command to parse the arguments given to the program from the command line
+parser = argparse.ArgumentParser()
+# add positional argument, type defaults is a str
+parser.add_argument('arg1', help='msg1')
+args = parser.parse_args() #the parser.parse_args() returns a namespace
+print(args.arg1 + 'was used') 
+# optional arguments, if argument is given args.debug = True; if not args.debug = None
+parser.add_argument('-a', '--arg2', help='msg2', type=int, default=10)
+parser.add_argument('-d','--debug', help='msg3', action='store_true')
+print(args.arg2, args.debug, end='\n', sep=' | ')
 ```
 ### time, date and schedule
 Control timing

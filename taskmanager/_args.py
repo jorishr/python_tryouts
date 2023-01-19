@@ -1,10 +1,11 @@
 import argparse
 
 msg = 'Hello, welcome to the Task Manager.'
-parser = argparse.ArgumentParser(description=f'{msg}',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser = argparse.ArgumentParser(description=f'{msg}')
 parser.add_argument('--debug', action='store_true', help='developer mode, see full error messages')
-arg = parser.parse_args()
-config = vars(arg)
+args = parser.parse_args()
 
-debugMode = bool(config['debug'])
+debugMode = False
+if args.debug:
+    debugMode = True 
 #print(debugMode)
