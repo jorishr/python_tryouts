@@ -1,3 +1,4 @@
 taskmanager/backup/
 taskmanager/tasks.txt
 __pycache__/
+*.png
